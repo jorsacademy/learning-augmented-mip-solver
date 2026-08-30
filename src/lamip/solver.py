@@ -12,7 +12,6 @@ from .models import LearnedComponents
 from .presolve import PRESOLVE_CONFIGS, PresolveConfig, apply_presolve, instance_features
 from .problem import BinaryPackingMIP
 
-
 CutPolicy = Literal["none", "efficacy", "oracle", "learned"]
 BranchPolicy = Literal["most_fractional", "strong", "learned"]
 PrimalPolicy = Literal["none", "greedy", "learned"]
@@ -257,9 +256,10 @@ def _choose_branch(
 
 def solve(
     original: BinaryPackingMIP,
-    config: SolverConfig = SolverConfig(),
+    config: SolverConfig | None = None,
     learned: LearnedComponents | None = None,
 ) -> SolveResult:
+    config = SolverConfig() if config is None else config
     if config.cut_rounds < 0 or config.max_nodes < 1:
         raise ValueError("invalid solver limits")
     learned = LearnedComponents() if learned is None else learned.eval()
@@ -267,9 +267,7 @@ def solve(
     presolved = apply_presolve(original, selected_presolve)
     problem = presolved.problem
 
-    cuts, root_lp, lp_solves = _root_cut_loop(
-        problem, config.cuts, config.cut_rounds, learned
-    )
+    cuts, root_lp, lp_solves = _root_cut_loop(problem, config.cuts, config.cut_rounds, learned)
     incumbent = _greedy_incumbent(problem, config.primal, learned)
     initial_incumbent = incumbent + presolved.objective_offset
 
