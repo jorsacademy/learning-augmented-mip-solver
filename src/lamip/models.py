@@ -57,7 +57,7 @@ class LearnedComponents:
     branching: BranchScorer | None = None
     primal: PrimalScorer | None = None
 
-    def eval(self) -> "LearnedComponents":
+    def eval(self) -> LearnedComponents:
         for model in (self.presolve, self.cuts, self.branching, self.primal):
             if model is not None:
                 model.eval()
