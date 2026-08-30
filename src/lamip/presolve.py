@@ -7,7 +7,6 @@ import numpy as np
 
 from .problem import BinaryPackingMIP
 
-
 PresolveConfig = Literal["none", "fixing", "redundancy", "full"]
 PRESOLVE_CONFIGS: tuple[PresolveConfig, ...] = ("none", "fixing", "redundancy", "full")
 
@@ -48,7 +47,6 @@ def _redundant_rows(A: np.ndarray, b: np.ndarray) -> tuple[set[int], int]:
             if i == j or i in redundant:
                 continue
             checks += A.shape[1]
-            # Row j dominates row i: A_j >= A_i and b_j <= b_i.
             if np.all(A[j] >= A[i] - 1e-12) and b[j] <= b[i] + 1e-12:
                 redundant.add(i)
                 break
