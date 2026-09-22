@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=70", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "learning-to-control-cp-sat"
+version = "0.1.0"
+description = "A reproducible benchmark for learning variable-ordering control in finite-domain CP and public CP-SAT search strategies."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "jorsacademy"}]
+dependencies = [
+  "numpy>=2.0,<3",
+  "scikit-learn>=1.5,<2",
+  "ortools>=9.14,<10"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3,<10",
+  "ruff>=0.9,<1"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

@@ -1,0 +1,22 @@
+{
+  "run_kind": "ci-smoke",
+  "seeds": {
+    "train": 1100,
+    "validation": 2200,
+    "test": 3300,
+    "ood": 4400,
+    "policy": 5500,
+    "cp_sat": 6600,
+    "statistics": 7700,
+    "oracle": 8800
+  },
+  "train": {"count": 4, "n_vertices": 9, "n_colors": 3, "edge_probability": 0.45, "infeasible_fraction": 0.5},
+  "validation": {"count": 2, "n_vertices": 9, "n_colors": 3, "edge_probability": 0.45, "infeasible_fraction": 0.5},
+  "test": {"count": 3, "n_vertices": 10, "n_colors": 3, "edge_probability": 0.48, "infeasible_fraction": 0.5},
+  "ood": {"count": 2, "n_vertices": 12, "n_colors": 3, "edge_probability": 0.58, "infeasible_fraction": 0.5},
+  "expert_collection": {"max_states_per_instance": 16, "node_limit": 200},
+  "model": {"seed": 12345},
+  "custom_search": {"node_limit": 3000, "time_limit_seconds": 3.0},
+  "cp_sat": {"time_limit_seconds": 2.0},
+  "oracle": {"count": 2, "n_vertices": 6, "n_colors": 3, "edge_probability": 0.5, "infeasible_fraction": 0.5}
+}

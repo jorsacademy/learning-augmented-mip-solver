@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+title: Learning to Prune / Branch-and-Bound Node Selection
+message: If you use this educational research implementation, please cite the repository and the primary literature listed in the README.
+type: software
+authors:
+  - name: Jors Academy
+year: 2026
+repository-code: https://github.com/jorsacademy/learning-to-prune-bnb-node-selection

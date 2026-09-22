@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+title: "Neural Diving MIP Solution Prediction"
+message: "If you use this research sandbox, please cite the repository and the Neural Diving papers referenced in the README."
+type: software
+authors:
+  - name: "Jors Academy"
+year: 2026
+repository-code: "https://github.com/jorsacademy/neural-diving-mip-solution-prediction"

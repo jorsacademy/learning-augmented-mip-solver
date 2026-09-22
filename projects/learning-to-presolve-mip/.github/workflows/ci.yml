@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[dev]"
+      - run: python -m compileall -q src scripts examples
+      - run: ruff check .
+      - run: pytest -q
+      - name: End-to-end learning smoke test
+        run: |
+          python scripts/train.py \
+            --instances 8 \
+            --validation-instances 4 \
+            --vars 16 \
+            --constraints 5 \
+            --epochs 2 \
+            --hidden-dim 12 \
+            --checkpoint /tmp/presolve_selector.pt
+          python scripts/benchmark.py \
+            --checkpoint /tmp/presolve_selector.pt \
+            --instances 3 \
+            --vars 16 \
+            --constraints 5 \
+            --seed-start 900000 \
+            --json > /tmp/benchmark.json

@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=70"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "neural-diving-mip-solution-prediction"
+version = "0.1.0"
+description = "Independent Neural Diving research sandbox: solution prediction, partial variable fixing, and HiGHS sub-MIP completion."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+authors = [{name = "Jors Academy"}]
+dependencies = [
+  "numpy>=1.26,<3",
+  "scipy>=1.13,<2",
+  "torch>=2.2,<3",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "ruff>=0.9"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

@@ -1,0 +1,22 @@
+{
+  "run_kind": "research-benchmark",
+  "seeds": {
+    "train": 101000,
+    "validation": 202000,
+    "test": 303000,
+    "ood": 404000,
+    "policy": 505000,
+    "cp_sat": 606000,
+    "statistics": 707000,
+    "oracle": 808000
+  },
+  "train": {"count": 30, "n_vertices": 18, "n_colors": 3, "edge_probability": 0.42, "infeasible_fraction": 0.5},
+  "validation": {"count": 10, "n_vertices": 18, "n_colors": 3, "edge_probability": 0.42, "infeasible_fraction": 0.5},
+  "test": {"count": 20, "n_vertices": 18, "n_colors": 3, "edge_probability": 0.42, "infeasible_fraction": 0.5},
+  "ood": {"count": 20, "n_vertices": 24, "n_colors": 3, "edge_probability": 0.55, "infeasible_fraction": 0.5},
+  "expert_collection": {"max_states_per_instance": 64, "node_limit": 5000},
+  "model": {"seed": 314159},
+  "custom_search": {"node_limit": 100000, "time_limit_seconds": 20.0},
+  "cp_sat": {"time_limit_seconds": 10.0},
+  "oracle": {"count": 6, "n_vertices": 7, "n_colors": 3, "edge_probability": 0.5, "infeasible_fraction": 0.5}
+}

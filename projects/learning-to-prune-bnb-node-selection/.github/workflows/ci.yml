@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install
+        run: python -m pip install -e ".[dev]"
+      - name: Lint
+        run: ruff check .
+      - name: Unit tests
+        run: pytest
+
+  research-smoke:
+    runs-on: ubuntu-24.04
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: python -m pip install -e ".[dev]"
+      - name: Train deterministic smoke policy
+        run: >-
+          python scripts/train.py
+          --seed 42
+          --train-instances 20
+          --validation-instances 8
+          --items 10
+          --out artifacts/policy.json
+          --metrics-out artifacts/training_metrics.json
+      - name: Verify exactness and benchmark approximate pruning
+        run: >-
+          python scripts/benchmark.py
+          --policy artifacts/policy.json
+          --seed 9000
+          --instances 8
+          --items 11
+          --prune-threshold 0.5
+          --output artifacts/benchmark.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: research-smoke-artifacts
+          path: artifacts/*.json

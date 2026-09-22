@@ -1,0 +1,105 @@
+name: Research Smoke Benchmark
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/research-smoke.yml"
+      - "scripts/render_benchmark_table.py"
+
+permissions:
+  contents: read
+
+jobs:
+  research-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install package
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -e ".[dev]"
+
+      - name: Train MLP MSE
+        run: |
+          python scripts/train.py \
+            --instances 30 \
+            --vars 12 \
+            --constraints 5 \
+            --max-nodes-per-instance 12 \
+            --loss mse \
+            --epochs 25 \
+            --seed 101 \
+            --checkpoint checkpoints/branching_mse.pt
+
+      - name: Train MLP listwise
+        run: |
+          python scripts/train.py \
+            --instances 30 \
+            --vars 12 \
+            --constraints 5 \
+            --max-nodes-per-instance 12 \
+            --loss listwise \
+            --epochs 25 \
+            --seed 101 \
+            --checkpoint checkpoints/branching_listwise.pt
+
+      - name: Train GNN
+        run: |
+          python scripts/train_gnn.py \
+            --instances 15 \
+            --vars 12 \
+            --constraints 5 \
+            --max-nodes-per-instance 8 \
+            --epochs 20 \
+            --hidden-dim 64 \
+            --seed 101 \
+            --checkpoint checkpoints/branching_gnn.pt
+
+      - name: Run paired repeated-seed benchmark
+        run: |
+          mkdir -p results
+          python scripts/benchmark.py \
+            --instances-per-seed 4 \
+            --vars 12 \
+            --constraints 5 \
+            --seeds 1000 1001 1002 \
+            --agreement-instances 8 \
+            --reliability-threshold 2 \
+            --mse-checkpoint checkpoints/branching_mse.pt \
+            --listwise-checkpoint checkpoints/branching_listwise.pt \
+            --gnn-checkpoint checkpoints/branching_gnn.pt \
+            | tee results/benchmark.txt
+
+      - name: Render benchmark table
+        run: python scripts/render_benchmark_table.py results/benchmark.txt results/RESULTS.md
+
+      - name: Run OOD smoke benchmark
+        run: |
+          python scripts/generalization.py \
+            --checkpoint checkpoints/branching_listwise.pt \
+            --gnn-checkpoint checkpoints/branching_gnn.pt \
+            --reliability-threshold 2 \
+            --instances-per-seed 2 \
+            --seeds 2000 2001 \
+            | tee results/generalization.txt
+
+      - name: Upload research artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: research-smoke-results
+          path: |
+            checkpoints/*.pt
+            results/benchmark.txt
+            results/generalization.txt
+            results/RESULTS.md

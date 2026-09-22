@@ -1,0 +1,20 @@
+{
+  "solver": {"time_limit_seconds": 2.0, "random_seed": 7},
+  "selector": {
+    "validation_seed": 101,
+    "training_seeds": [11, 23, 37],
+    "random_baseline_seed": 313,
+    "random_baseline_repeats": 20,
+    "hyperparameters": [
+      {"n_estimators": 150, "min_samples_leaf": 1},
+      {"n_estimators": 250, "min_samples_leaf": 2},
+      {"n_estimators": 250, "min_samples_leaf": 4}
+    ]
+  },
+  "splits": {
+    "train": {"count": 60, "seed_start": 10000, "row_range": [55, 90], "col_range": [90, 150], "density_range": [0.06, 0.22], "regimes": ["uniform", "skewed_cost", "degree_correlated", "near_duplicate"]},
+    "validation": {"count": 24, "seed_start": 20000, "row_range": [55, 90], "col_range": [90, 150], "density_range": [0.06, 0.22], "regimes": ["uniform", "skewed_cost", "degree_correlated", "near_duplicate"]},
+    "test": {"count": 36, "seed_start": 30000, "row_range": [55, 90], "col_range": [90, 150], "density_range": [0.06, 0.22], "regimes": ["uniform", "skewed_cost", "degree_correlated", "near_duplicate"]},
+    "ood": {"count": 24, "seed_start": 40000, "row_range": [95, 130], "col_range": [155, 220], "density_range": [0.025, 0.055], "regimes": ["uniform", "skewed_cost", "degree_correlated", "near_duplicate"]}
+  }
+}
