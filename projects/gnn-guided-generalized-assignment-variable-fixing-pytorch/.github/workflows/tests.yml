@@ -1,0 +1,47 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install CPU PyTorch and dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --index-url https://download.pytorch.org/whl/cpu "torch>=2.3"
+          pip install -r requirements.txt
+
+      - name: Run GNN-GAP self-test
+        run: python gnn_gap_variable_fixing.py --self-test
+
+      - name: Run regression suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Run GNN fixing and exact-repair smoke experiment
+        run: |
+          python gnn_gap_variable_fixing.py \
+            --seed 42 \
+            --machines 5 \
+            --jobs 12 \
+            --train-instances 24 \
+            --validation-instances 8 \
+            --test-instances 8 \
+            --epochs 6 \
+            --batch-size 8 \
+            --hidden-dim 32 \
+            --layers 2 \
+            --target-fix-precision 0.85 \
+            --minimum-fix-coverage 0.05 \
+            --margin-threshold 0.02
