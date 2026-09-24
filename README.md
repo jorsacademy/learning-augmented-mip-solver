@@ -1,4 +1,26 @@
-# Learning-Augmented MIP Solver
+# Learning-Augmented Optimization Solvers
+
+<!-- portfolio-umbrella:start -->
+## Portfolio role
+
+This repository is the primary umbrella repository for this Jors Academy research area. Related projects have been consolidated under `projects/` so the methods, implementations, experiments, and case studies can be maintained and explored from one place.
+
+### Included projects
+
+- [`gnn-guided-generalized-assignment-variable-fixing-pytorch`](projects/gnn-guided-generalized-assignment-variable-fixing-pytorch/)
+- [`learning-to-branch-milp`](projects/learning-to-branch-milp/)
+- [`learning-to-branch-mip-gnn-scip-pytorch`](projects/learning-to-branch-mip-gnn-scip-pytorch/)
+- [`learning-to-configure-optimization-solvers`](projects/learning-to-configure-optimization-solvers/)
+- [`learning-to-control-cp-sat`](projects/learning-to-control-cp-sat/)
+- [`learning-to-cut-milp`](projects/learning-to-cut-milp/)
+- [`learning-to-presolve-mip`](projects/learning-to-presolve-mip/)
+- [`learning-to-price-column-generation-cvrptw`](projects/learning-to-price-column-generation-cvrptw/)
+- [`learning-to-prune-bnb-node-selection`](projects/learning-to-prune-bnb-node-selection/)
+- [`ml-warm-start-constraint-generation`](projects/ml-warm-start-constraint-generation/)
+- [`neural-diving-mip-solution-prediction`](projects/neural-diving-mip-solution-prediction/)
+
+Each consolidated project keeps its own files and a `SOURCE_REPOSITORY.md` provenance record. The snapshot preserves the source repository's default-branch files at consolidation time; repository-level history and metadata remain separate from the snapshot.
+<!-- portfolio-umbrella:end -->
 
 A transparent research sandbox for **integrating multiple learned decisions inside one exact mixed-integer programming pipeline**.
 
