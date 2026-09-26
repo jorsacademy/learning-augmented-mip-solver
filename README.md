@@ -3,7 +3,7 @@
 <!-- portfolio-umbrella:start -->
 ## Portfolio role
 
-This repository is the primary umbrella repository for this Jors Academy research area. Related projects have been consolidated under `projects/` so the methods, implementations, experiments, and case studies can be maintained and explored from one place.
+This repository is the primary umbrella repository for Jors Academy work on **learning inside and around exact optimization solvers**. The original recovered projects are preserved under `projects/`; new work should extend this monorepo rather than create another near-duplicate solver-learning repository.
 
 ### Included projects
 
@@ -16,11 +16,37 @@ This repository is the primary umbrella repository for this Jors Academy researc
 - [`learning-to-presolve-mip`](projects/learning-to-presolve-mip/)
 - [`learning-to-price-column-generation-cvrptw`](projects/learning-to-price-column-generation-cvrptw/)
 - [`learning-to-prune-bnb-node-selection`](projects/learning-to-prune-bnb-node-selection/)
+- [`learning-to-search-bnb-nodes`](projects/learning-to-search-bnb-nodes/)
+- [`learning-to-select-primal-heuristics`](projects/learning-to-select-primal-heuristics/)
 - [`ml-warm-start-constraint-generation`](projects/ml-warm-start-constraint-generation/)
 - [`neural-diving-mip-solution-prediction`](projects/neural-diving-mip-solution-prediction/)
 
-Each consolidated project keeps its own files and a `SOURCE_REPOSITORY.md` provenance record. The snapshot preserves the source repository's default-branch files at consolidation time; repository-level history and metadata remain separate from the snapshot.
+The 11 recovered projects retain their own files and provenance records. The two additional projects—`learning-to-search-bnb-nodes` and `learning-to-select-primal-heuristics`—fill solver-control gaps that were not represented as standalone projects in the restored monorepo.
+
+See [`RECOVERY_AUDIT.md`](RECOVERY_AUDIT.md) for the recovery verification, [`docs/literature-map.md`](docs/literature-map.md) for the research lineage, and [`docs/research-protocol.md`](docs/research-protocol.md) for the evaluation contract.
 <!-- portfolio-umbrella:end -->
+
+<!-- intervention-map:start -->
+## Solver intervention map
+
+| Stage | Project | Learned decision | Guarantee / fallback |
+|---|---|---|---|
+| Presolve | `learning-to-presolve-mip` | instance-specific presolve configuration | exact solve after configuration |
+| Solver configuration | `learning-to-configure-optimization-solvers` | solver/search profile | all profiles remain valid solvers |
+| Branching | `learning-to-branch-milp` | branching variable | strong/classical branching references |
+| Branching integration | `learning-to-branch-mip-gnn-scip-pytorch` | graph-based branch scores | SCIP/PyTorch specialization |
+| Node search | `learning-to-search-bnb-nodes` | node expansion priority | changes search order, not feasibility |
+| Node pruning | `learning-to-prune-bnb-node-selection` | promising-subtree estimate | exact bounds remain authoritative |
+| Cut selection | `learning-to-cut-milp` | valid-cut ranking | only mathematically valid cuts admitted |
+| Neural diving | `neural-diving-mip-solution-prediction` | high-confidence assignments | residual exact solve / fallback |
+| Primal heuristic portfolio | `learning-to-select-primal-heuristics` | constructive heuristic choice | every candidate is independently feasible |
+| Variable fixing | `gnn-guided-generalized-assignment-variable-fixing-pytorch` | confident fixings | residual exact solve / fallback |
+| Column generation | `learning-to-price-column-generation-cvrptw` | pricing guidance | exact pricing fallback |
+| Constraint generation | `ml-warm-start-constraint-generation` | initial active constraints/scenarios | exact separation to closure |
+| CP-SAT | `learning-to-control-cp-sat` | hints/search control | CP-SAT remains authoritative |
+
+The root `lamip` package remains the integration laboratory for safe presolve, learned cut ranking, primal guidance, learned branching, and exact branch-and-cut search.
+<!-- intervention-map:end -->
 
 A transparent research sandbox for **integrating multiple learned decisions inside one exact mixed-integer programming pipeline**.
 

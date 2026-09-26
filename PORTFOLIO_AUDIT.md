@@ -110,3 +110,15 @@ These should remain outside the core MIP-solver-learning taxonomy because they l
 ## Audit conclusion
 
 For the modern AI × OR scope, the portfolio is now **coverage-complete enough that integration, evaluation quality, and canonicalization matter more than adding topics**. The largest historical gap was solver-internal integration; this repository is intended to close that gap while preserving clear methodological boundaries.
+
+
+## Consolidated monorepo update
+
+After recovery of the umbrella repository, the portfolio map was re-audited at the solver-intervention level.
+
+Two additional projects were added because they cover distinct decisions that were previously present only implicitly or not at all:
+
+- `learning-to-search-bnb-nodes` — **node expansion order** inside branch-and-bound. This is distinct from branching-variable selection and from learned pruning.
+- `learning-to-select-primal-heuristics` — **per-instance primal heuristic portfolio selection**. This is distinct from Neural Diving and variable fixing because it selects among complete constructive heuristics rather than predicting variable assignments.
+
+The canonicalization rule remains unchanged: new solver-learning work should extend this monorepo unless it requires a genuinely different solver integration, state representation, or guarantee boundary.
