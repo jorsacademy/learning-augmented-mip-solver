@@ -21,3 +21,8 @@ The literature and benchmark protocol were also centralized under `docs/`.
 ## Canonical-source rule
 
 The restored 11 project snapshots are treated as the canonical recovered code. Experimental reconstructions made during the recovery window are not used to replace them.
+
+
+## Post-recovery verification
+
+The restored monorepo was extended only after the recovered project snapshots were audited. The CI workflow is expected to validate the root integration package and the new solver-control extension tests on Python 3.11 and 3.12.
